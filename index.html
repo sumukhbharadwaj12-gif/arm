@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ARM Lab Prep – All Programs</title>
+<style>
+:root{--bg:#101521;--panel:#182235;--panel2:#202d43;--text:#edf3ff;--muted:#a9b8ce;--line:#34435b;--accent:#7cafff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:1050px;margin:auto;padding:20px 14px 90px}header,.program{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
+h1{font-size:clamp(26px,5vw,38px);margin:0 0 8px}h2{font-size:23px;margin:12px 0}h3{margin:18px 0 8px}p,.muted{color:var(--muted)}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:4px 10px;color:var(--muted);font-size:12px}
+.logic,.result{background:var(--panel2);border-radius:10px;padding:12px;margin:12px 0}
+pre{white-space:pre;overflow-x:auto;background:#0b101a;border:1px solid var(--line);padding:14px;border-radius:12px;font-size:13px;line-height:1.55}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:13px}th,td{text-align:left;vertical-align:top;padding:9px;border-bottom:1px solid var(--line)}th{background:var(--panel2)}td:first-child{color:var(--muted);width:35px}td:nth-child(2){width:42%}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+nav{display:flex;flex-wrap:wrap;gap:8px}nav a{color:var(--text);background:var(--panel2);border:1px solid var(--line);padding:8px 11px;border-radius:9px;text-decoration:none}
+.logo{position:fixed;right:14px;bottom:14px;width:76px;height:76px;object-fit:contain;background:#05070d;border-radius:16px;padding:7px;box-shadow:0 4px 18px #0008}
+@media print{body{background:white;color:#111}header,.program{background:white;color:#111;break-inside:avoid}.logic,.result,th{background:#eee;color:#111}p{color:#333}.logo{display:none}}
+</style></head><body><main>
+<header><h1>ARM Controller Lab – Complete Exam Prep</h1>
+<p>All eight program entries are displayed on this single page. No tabs or JavaScript are required. Scroll down to revise every program and its line-by-line explanation.</p>
+<nav><a href="#program-1">Experiment 1</a><a href="#program-2">Experiment 2</a><a href="#program-3">Experiment 3</a><a href="#program-4">Experiment 4</a><a href="#program-5">Experiment 5</a><a href="#program-6">Experiment 6</a><a href="#program-7">Experiment 7</a><a href="#program-8">Experiment 8</a></nav>
+<p class="muted">Source-based study aid. Use your faculty-approved record for final assembler syntax and execution.</p></header>
+
+<section class="program" id="program-1">
+ <div class="tag">EXPERIMENT 01</div>
+ <h2>1. Fibonacci Series</h2>
+ <p>Generate and store the first 10 Fibonacci numbers.</p>
+ <div class="logic"><b>Simple logic:</b> Start with 0 and 1. Add the two values, shift the values forward, store the current term, and repeat 10 times.</div>
+ <h3>Complete program</h3>
+ <pre><code>AREA FIBO, CODE, READONLY
+EXPORT __main
+__main
+ENTRY
+START
+    LDR R4, =RESULT
+    MOV R0, #0
+    MOV R1, #1
+    MOV R2, #10
+LOOP
+    STR R0, [R4], #4
+    ADD R3, R0, R1
+    MOV R0, R1
+    MOV R1, R3
+    SUBS R2, R2, #1
+    BNE LOOP
+STOP
+    B STOP
+AREA DATA, DATA, READWRITE
+RESULT SPACE 40
+END</code></pre>
+ <h3>Line-by-line explanation</h3>
+ <div class="tablewrap"><table><thead><tr><th>#</th><th>Program line</th><th>Meaning</th></tr></thead><tbody><tr><td>1</td><td><code>AREA FIBO, CODE, READONLY</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>2</td><td><code>EXPORT __main</code></td><td>Makes the named entry symbol visible to the linker.</td></tr><tr><td>3</td><td><code>__main</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>4</td><td><code>ENTRY</code></td><td>Marks the program entry point.</td></tr><tr><td>5</td><td><code>START</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>6</td><td><code>    LDR R4, =RESULT</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>7</td><td><code>    MOV R0, #0</code></td><td>Copies a value into the destination register.</td></tr><tr><td>8</td><td><code>    MOV R1, #1</code></td><td>Copies a value into the destination register.</td></tr><tr><td>9</td><td><code>    MOV R2, #10</code></td><td>Copies a value into the destination register.</td></tr><tr><td>10</td><td><code>LOOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>11</td><td><code>    STR R0, [R4], #4</code></td><td>Stores a register value into memory. [Rn] is the destination address; #4 post-index advances by 4 bytes.</td></tr><tr><td>12</td><td><code>    ADD R3, R0, R1</code></td><td>Adds the source operand(s) and stores the sum in the destination register.</td></tr><tr><td>13</td><td><code>    MOV R0, R1</code></td><td>Copies a value into the destination register.</td></tr><tr><td>14</td><td><code>    MOV R1, R3</code></td><td>Copies a value into the destination register.</td></tr><tr><td>15</td><td><code>    SUBS R2, R2, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>16</td><td><code>    BNE LOOP</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>17</td><td><code>STOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>18</td><td><code>    B STOP</code></td><td>Unconditional branch to the named label.</td></tr><tr><td>19</td><td><code>AREA DATA, DATA, READWRITE</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>20</td><td><code>RESULT SPACE 40</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>21</td><td><code>END</code></td><td>Marks the end of the assembly source file.</td></tr></tbody></table></div>
+ <h3>Expected result</h3><div class="result">0, 1, 1, 2, 3, 5, 8, 13, 21, 34</div>
+</section>
+<section class="program" id="program-2">
+ <div class="tag">EXPERIMENT 02</div>
+ <h2>2. Addition of 16-bit Array</h2>
+ <p>Add six 16-bit values and store the sum as a 32-bit result.</p>
+ <div class="logic"><b>Simple logic:</b> R1 points to the array. LDRH loads one 16-bit halfword (2 bytes). R4 holds the running sum and R5 counts the six elements.</div>
+ <h3>Complete program</h3>
+ <pre><code>AREA ADDITION, CODE, READONLY
+EXPORT __main
+__main
+ENTRY
+START
+    MOV R5, #6
+    MOV R4, #0
+    LDR R1, =VALUE1
+LOOP
+    LDRH R0, [R1], #2
+    ADD R4, R0, R4
+    SUBS R5, R5, #1
+    CMP R5, #0
+    BNE LOOP
+    LDR R0, =RESULT
+    STR R4, [R0]
+    NOP
+VALUE1
+    DCW 0x1111, 0x2222, 0x3333
+    DCW 0xAAAA, 0xBBBB, 0xCCCC
+AREA DATA1, DATA, READWRITE
+RESULT DCD 0
+END</code></pre>
+ <h3>Line-by-line explanation</h3>
+ <div class="tablewrap"><table><thead><tr><th>#</th><th>Program line</th><th>Meaning</th></tr></thead><tbody><tr><td>1</td><td><code>AREA ADDITION, CODE, READONLY</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>2</td><td><code>EXPORT __main</code></td><td>Makes the named entry symbol visible to the linker.</td></tr><tr><td>3</td><td><code>__main</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>4</td><td><code>ENTRY</code></td><td>Marks the program entry point.</td></tr><tr><td>5</td><td><code>START</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>6</td><td><code>    MOV R5, #6</code></td><td>Copies a value into the destination register.</td></tr><tr><td>7</td><td><code>    MOV R4, #0</code></td><td>Copies a value into the destination register.</td></tr><tr><td>8</td><td><code>    LDR R1, =VALUE1</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>9</td><td><code>LOOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>10</td><td><code>    LDRH R0, [R1], #2</code></td><td>Loads a 16-bit halfword from memory into a register; the post-index updates the pointer.</td></tr><tr><td>11</td><td><code>    ADD R4, R0, R4</code></td><td>Adds the source operand(s) and stores the sum in the destination register.</td></tr><tr><td>12</td><td><code>    SUBS R5, R5, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>13</td><td><code>    CMP R5, #0</code></td><td>Compares two values by internally subtracting them; updates flags but does not save a result.</td></tr><tr><td>14</td><td><code>    BNE LOOP</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>15</td><td><code>    LDR R0, =RESULT</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>16</td><td><code>    STR R4, [R0]</code></td><td>Stores a register value into memory. [Rn] is the destination address; #4 post-index advances by 4 bytes.</td></tr><tr><td>17</td><td><code>    NOP</code></td><td>No operation; useful as a simple stopping/debug point.</td></tr><tr><td>18</td><td><code>VALUE1</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>19</td><td><code>    DCW 0x1111, 0x2222, 0x3333</code></td><td>Defines 16-bit data values in memory.</td></tr><tr><td>20</td><td><code>    DCW 0xAAAA, 0xBBBB, 0xCCCC</code></td><td>Defines 16-bit data values in memory.</td></tr><tr><td>21</td><td><code>AREA DATA1, DATA, READWRITE</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>22</td><td><code>RESULT DCD 0</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>23</td><td><code>END</code></td><td>Marks the end of the assembly source file.</td></tr></tbody></table></div>
+ <h3>Expected result</h3><div class="result">0x00029997</div>
+</section>
+<section class="program" id="program-3">
+ <div class="tag">EXPERIMENT 03</div>
+ <h2>3. Find Largest Number</h2>
+ <p>Find the largest unsigned 32-bit number in the array.</p>
+ <div class="logic"><b>Simple logic:</b> Load the first value as the current largest. Compare each following value. If the new value is greater, replace the current largest.</div>
+ <h3>Complete program</h3>
+ <pre><code>AREA LARGEST, CODE, READONLY
+EXPORT __main
+__main
+ENTRY
+START
+    MOV R5, #6
+    LDR R1, =VALUE1
+    LDR R0, [R1], #4
+LOOP
+    LDR R4, [R1], #4
+    CMP R0, R4
+    BHS LOOP1
+    MOV R0, R4
+LOOP1
+    SUBS R5, R5, #1
+    CMP R5, #0
+    BNE LOOP
+    LDR R4, =RESULT
+    STR R0, [R4]
+    NOP
+VALUE1
+    DCD 0x44444444
+    DCD 0x22222222
+    DCD 0x11111111
+    DCD 0x33333333
+    DCD 0xAAAAAAAA
+    DCD 0x88888888
+    DCD 0x99999999
+AREA DATA2, DATA, READWRITE
+RESULT DCD 0
+END</code></pre>
+ <h3>Line-by-line explanation</h3>
+ <div class="tablewrap"><table><thead><tr><th>#</th><th>Program line</th><th>Meaning</th></tr></thead><tbody><tr><td>1</td><td><code>AREA LARGEST, CODE, READONLY</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>2</td><td><code>EXPORT __main</code></td><td>Makes the named entry symbol visible to the linker.</td></tr><tr><td>3</td><td><code>__main</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>4</td><td><code>ENTRY</code></td><td>Marks the program entry point.</td></tr><tr><td>5</td><td><code>START</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>6</td><td><code>    MOV R5, #6</code></td><td>Copies a value into the destination register.</td></tr><tr><td>7</td><td><code>    LDR R1, =VALUE1</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>8</td><td><code>    LDR R0, [R1], #4</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>9</td><td><code>LOOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>10</td><td><code>    LDR R4, [R1], #4</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>11</td><td><code>    CMP R0, R4</code></td><td>Compares two values by internally subtracting them; updates flags but does not save a result.</td></tr><tr><td>12</td><td><code>    BHS LOOP1</code></td><td>Branches if unsigned higher or same (carry set); often used to skip a swap in ascending sorting.</td></tr><tr><td>13</td><td><code>    MOV R0, R4</code></td><td>Copies a value into the destination register.</td></tr><tr><td>14</td><td><code>LOOP1</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>15</td><td><code>    SUBS R5, R5, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>16</td><td><code>    CMP R5, #0</code></td><td>Compares two values by internally subtracting them; updates flags but does not save a result.</td></tr><tr><td>17</td><td><code>    BNE LOOP</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>18</td><td><code>    LDR R4, =RESULT</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>19</td><td><code>    STR R0, [R4]</code></td><td>Stores a register value into memory. [Rn] is the destination address; #4 post-index advances by 4 bytes.</td></tr><tr><td>20</td><td><code>    NOP</code></td><td>No operation; useful as a simple stopping/debug point.</td></tr><tr><td>21</td><td><code>VALUE1</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>22</td><td><code>    DCD 0x44444444</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>23</td><td><code>    DCD 0x22222222</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>24</td><td><code>    DCD 0x11111111</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>25</td><td><code>    DCD 0x33333333</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>26</td><td><code>    DCD 0xAAAAAAAA</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>27</td><td><code>    DCD 0x88888888</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>28</td><td><code>    DCD 0x99999999</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>29</td><td><code>AREA DATA2, DATA, READWRITE</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>30</td><td><code>RESULT DCD 0</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>31</td><td><code>END</code></td><td>Marks the end of the assembly source file.</td></tr></tbody></table></div>
+ <h3>Expected result</h3><div class="result">0xAAAAAAAA</div>
+</section>
+<section class="program" id="program-4">
+ <div class="tag">EXPERIMENT 03</div>
+ <h2>4. Find Smallest Number</h2>
+ <p>Find the smallest unsigned 32-bit number in the array.</p>
+ <div class="logic"><b>Simple logic:</b> Load the first value as the current smallest. Compare each following value. If the new value is lower, replace the current smallest.</div>
+ <h3>Complete program</h3>
+ <pre><code>AREA SMALLEST, CODE, READONLY
+EXPORT __main
+__main
+ENTRY
+START
+    MOV R5, #6
+    LDR R1, =VALUE1
+    LDR R0, [R1], #4
+LOOP
+    LDR R4, [R1], #4
+    CMP R0, R4
+    BLS LOOP1
+    MOV R0, R4
+LOOP1
+    SUBS R5, R5, #1
+    CMP R5, #0
+    BNE LOOP
+    LDR R4, =RESULT
+    STR R0, [R4]
+    NOP
+VALUE1
+    DCD 0x44444444
+    DCD 0x22222222
+    DCD 0x11111111
+    DCD 0x33333333
+    DCD 0xAAAAAAAA
+    DCD 0x88888888
+    DCD 0x99999999
+AREA DATA2, DATA, READWRITE
+RESULT DCD 0
+END</code></pre>
+ <h3>Line-by-line explanation</h3>
+ <div class="tablewrap"><table><thead><tr><th>#</th><th>Program line</th><th>Meaning</th></tr></thead><tbody><tr><td>1</td><td><code>AREA SMALLEST, CODE, READONLY</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>2</td><td><code>EXPORT __main</code></td><td>Makes the named entry symbol visible to the linker.</td></tr><tr><td>3</td><td><code>__main</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>4</td><td><code>ENTRY</code></td><td>Marks the program entry point.</td></tr><tr><td>5</td><td><code>START</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>6</td><td><code>    MOV R5, #6</code></td><td>Copies a value into the destination register.</td></tr><tr><td>7</td><td><code>    LDR R1, =VALUE1</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>8</td><td><code>    LDR R0, [R1], #4</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>9</td><td><code>LOOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>10</td><td><code>    LDR R4, [R1], #4</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>11</td><td><code>    CMP R0, R4</code></td><td>Compares two values by internally subtracting them; updates flags but does not save a result.</td></tr><tr><td>12</td><td><code>    BLS LOOP1</code></td><td>Branches if unsigned lower or same; often used to skip a swap in ascending sorting.</td></tr><tr><td>13</td><td><code>    MOV R0, R4</code></td><td>Copies a value into the destination register.</td></tr><tr><td>14</td><td><code>LOOP1</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>15</td><td><code>    SUBS R5, R5, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>16</td><td><code>    CMP R5, #0</code></td><td>Compares two values by internally subtracting them; updates flags but does not save a result.</td></tr><tr><td>17</td><td><code>    BNE LOOP</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>18</td><td><code>    LDR R4, =RESULT</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>19</td><td><code>    STR R0, [R4]</code></td><td>Stores a register value into memory. [Rn] is the destination address; #4 post-index advances by 4 bytes.</td></tr><tr><td>20</td><td><code>    NOP</code></td><td>No operation; useful as a simple stopping/debug point.</td></tr><tr><td>21</td><td><code>VALUE1</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>22</td><td><code>    DCD 0x44444444</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>23</td><td><code>    DCD 0x22222222</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>24</td><td><code>    DCD 0x11111111</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>25</td><td><code>    DCD 0x33333333</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>26</td><td><code>    DCD 0xAAAAAAAA</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>27</td><td><code>    DCD 0x88888888</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>28</td><td><code>    DCD 0x99999999</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>29</td><td><code>AREA DATA2, DATA, READWRITE</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>30</td><td><code>RESULT DCD 0</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>31</td><td><code>END</code></td><td>Marks the end of the assembly source file.</td></tr></tbody></table></div>
+ <h3>Expected result</h3><div class="result">0x11111111</div>
+</section>
+<section class="program" id="program-5">
+ <div class="tag">EXPERIMENT 04</div>
+ <h2>5. Ascending Order (Notebook Version)</h2>
+ <p>Copy six 32-bit values to RESULT, then repeatedly compare adjacent values and swap when the left value is greater.</p>
+ <div class="logic"><b>Simple logic:</b> R5 points to the input VALUE array. R0 points to RESULT. The COPY loop copies six words. The OUTLOOP and INLOOP perform bubble-sort passes. CMP compares adjacent values; BLS skips the swap when the left value is already lower or equal.</div>
+ <h3>Complete program</h3>
+ <pre><code>AREA ASCENDING, CODE, READONLY
+EXPORT __main
+ENTRY
+__main
+START
+    LDR R5, =VALUE
+    LDR R0, =RESULT
+    MOV R6, #6
+COPY
+    LDR R2, [R5], #4
+    STR R2, [R0], #4
+    SUBS R6, R6, #1
+    BNE COPY
+    MOV R1, #5
+OUTLOOP
+    LDR R0, =RESULT
+    MOV R3, R1
+INLOOP
+    LDR R2, [R0]
+    LDR R4, [R0, #4]
+    CMP R2, R4
+    BLS SKIP
+    STR R4, [R0]
+    STR R2, [R0, #4]
+SKIP
+    ADD R0, R0, #4
+    SUBS R3, R3, #1
+    BNE INLOOP
+    SUBS R1, R1, #1
+    BNE OUTLOOP
+    NOP
+VALUE
+    DCD 0x44444444, 0x22222222, 0x11111111
+    DCD 0xAAAAAAAA, 0x33333333, 0x88888888
+AREA MYDATA, DATA, READWRITE
+RESULT DCD 0, 0, 0, 0, 0, 0
+END</code></pre>
+ <h3>Line-by-line explanation</h3>
+ <div class="tablewrap"><table><thead><tr><th>#</th><th>Program line</th><th>Meaning</th></tr></thead><tbody><tr><td>1</td><td><code>AREA ASCENDING, CODE, READONLY</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>2</td><td><code>EXPORT __main</code></td><td>Makes the named entry symbol visible to the linker.</td></tr><tr><td>3</td><td><code>ENTRY</code></td><td>Marks the program entry point.</td></tr><tr><td>4</td><td><code>__main</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>5</td><td><code>START</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>6</td><td><code>    LDR R5, =VALUE</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>7</td><td><code>    LDR R0, =RESULT</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>8</td><td><code>    MOV R6, #6</code></td><td>Copies a value into the destination register.</td></tr><tr><td>9</td><td><code>COPY</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>10</td><td><code>    LDR R2, [R5], #4</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>11</td><td><code>    STR R2, [R0], #4</code></td><td>Stores a register value into memory. [Rn] is the destination address; #4 post-index advances by 4 bytes.</td></tr><tr><td>12</td><td><code>    SUBS R6, R6, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>13</td><td><code>    BNE COPY</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>14</td><td><code>    MOV R1, #5</code></td><td>Copies a value into the destination register.</td></tr><tr><td>15</td><td><code>OUTLOOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>16</td><td><code>    LDR R0, =RESULT</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>17</td><td><code>    MOV R3, R1</code></td><td>Copies a value into the destination register.</td></tr><tr><td>18</td><td><code>INLOOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>19</td><td><code>    LDR R2, [R0]</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>20</td><td><code>    LDR R4, [R0, #4]</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>21</td><td><code>    CMP R2, R4</code></td><td>Compares two values by internally subtracting them; updates flags but does not save a result.</td></tr><tr><td>22</td><td><code>    BLS SKIP</code></td><td>Branches if unsigned lower or same; often used to skip a swap in ascending sorting.</td></tr><tr><td>23</td><td><code>    STR R4, [R0]</code></td><td>Stores a register value into memory. [Rn] is the destination address; #4 post-index advances by 4 bytes.</td></tr><tr><td>24</td><td><code>    STR R2, [R0, #4]</code></td><td>Stores a register value into memory. [Rn] is the destination address; #4 post-index advances by 4 bytes.</td></tr><tr><td>25</td><td><code>SKIP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>26</td><td><code>    ADD R0, R0, #4</code></td><td>Adds the source operand(s) and stores the sum in the destination register.</td></tr><tr><td>27</td><td><code>    SUBS R3, R3, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>28</td><td><code>    BNE INLOOP</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>29</td><td><code>    SUBS R1, R1, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>30</td><td><code>    BNE OUTLOOP</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>31</td><td><code>    NOP</code></td><td>No operation; useful as a simple stopping/debug point.</td></tr><tr><td>32</td><td><code>VALUE</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>33</td><td><code>    DCD 0x44444444, 0x22222222, 0x11111111</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>34</td><td><code>    DCD 0xAAAAAAAA, 0x33333333, 0x88888888</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>35</td><td><code>AREA MYDATA, DATA, READWRITE</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>36</td><td><code>RESULT DCD 0, 0, 0, 0, 0, 0</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>37</td><td><code>END</code></td><td>Marks the end of the assembly source file.</td></tr></tbody></table></div>
+ <h3>Expected result</h3><div class="result">Ascending order: 0x11111111, 0x22222222, 0x33333333, 0x44444444, 0x88888888, 0xAAAAAAAA (based on the six values legible in the notebook; verify the last two input constants against your original page).</div>
+</section>
+<section class="program" id="program-6">
+ <div class="tag">EXPERIMENT 04</div>
+ <h2>6. Descending Order (Notebook Version)</h2>
+ <p>Copy six 32-bit values to RESULT, then repeatedly compare adjacent values and swap when the left value is smaller.</p>
+ <div class="logic"><b>Simple logic:</b> Same copy and bubble-sort loops as ascending order. The difference is BHS: it skips the swap when the left value is already higher than or equal to the right value.</div>
+ <h3>Complete program</h3>
+ <pre><code>AREA DESCENDING, CODE, READONLY
+EXPORT __main
+ENTRY
+__main
+START
+    LDR R5, =VALUE
+    LDR R0, =RESULT
+    MOV R6, #6
+COPY
+    LDR R2, [R5], #4
+    STR R2, [R0], #4
+    SUBS R6, R6, #1
+    BNE COPY
+    MOV R1, #5
+OUTLOOP
+    LDR R0, =RESULT
+    MOV R3, R1
+INLOOP
+    LDR R2, [R0]
+    LDR R4, [R0, #4]
+    CMP R2, R4
+    BHS SKIP
+    STR R4, [R0]
+    STR R2, [R0, #4]
+SKIP
+    ADD R0, R0, #4
+    SUBS R3, R3, #1
+    BNE INLOOP
+    SUBS R1, R1, #1
+    BNE OUTLOOP
+    NOP
+VALUE
+    DCD 0x44444444, 0x22222222, 0x11111111
+    DCD 0xAAAAAAAA, 0x33333333, 0x88888888
+AREA MYDATA, DATA, READWRITE
+RESULT DCD 0, 0, 0, 0, 0, 0
+END</code></pre>
+ <h3>Line-by-line explanation</h3>
+ <div class="tablewrap"><table><thead><tr><th>#</th><th>Program line</th><th>Meaning</th></tr></thead><tbody><tr><td>1</td><td><code>AREA DESCENDING, CODE, READONLY</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>2</td><td><code>EXPORT __main</code></td><td>Makes the named entry symbol visible to the linker.</td></tr><tr><td>3</td><td><code>ENTRY</code></td><td>Marks the program entry point.</td></tr><tr><td>4</td><td><code>__main</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>5</td><td><code>START</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>6</td><td><code>    LDR R5, =VALUE</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>7</td><td><code>    LDR R0, =RESULT</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>8</td><td><code>    MOV R6, #6</code></td><td>Copies a value into the destination register.</td></tr><tr><td>9</td><td><code>COPY</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>10</td><td><code>    LDR R2, [R5], #4</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>11</td><td><code>    STR R2, [R0], #4</code></td><td>Stores a register value into memory. [Rn] is the destination address; #4 post-index advances by 4 bytes.</td></tr><tr><td>12</td><td><code>    SUBS R6, R6, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>13</td><td><code>    BNE COPY</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>14</td><td><code>    MOV R1, #5</code></td><td>Copies a value into the destination register.</td></tr><tr><td>15</td><td><code>OUTLOOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>16</td><td><code>    LDR R0, =RESULT</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>17</td><td><code>    MOV R3, R1</code></td><td>Copies a value into the destination register.</td></tr><tr><td>18</td><td><code>INLOOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>19</td><td><code>    LDR R2, [R0]</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>20</td><td><code>    LDR R4, [R0, #4]</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>21</td><td><code>    CMP R2, R4</code></td><td>Compares two values by internally subtracting them; updates flags but does not save a result.</td></tr><tr><td>22</td><td><code>    BHS SKIP</code></td><td>Branches if unsigned higher or same (carry set); often used to skip a swap in ascending sorting.</td></tr><tr><td>23</td><td><code>    STR R4, [R0]</code></td><td>Stores a register value into memory. [Rn] is the destination address; #4 post-index advances by 4 bytes.</td></tr><tr><td>24</td><td><code>    STR R2, [R0, #4]</code></td><td>Stores a register value into memory. [Rn] is the destination address; #4 post-index advances by 4 bytes.</td></tr><tr><td>25</td><td><code>SKIP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>26</td><td><code>    ADD R0, R0, #4</code></td><td>Adds the source operand(s) and stores the sum in the destination register.</td></tr><tr><td>27</td><td><code>    SUBS R3, R3, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>28</td><td><code>    BNE INLOOP</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>29</td><td><code>    SUBS R1, R1, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>30</td><td><code>    BNE OUTLOOP</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>31</td><td><code>    NOP</code></td><td>No operation; useful as a simple stopping/debug point.</td></tr><tr><td>32</td><td><code>VALUE</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>33</td><td><code>    DCD 0x44444444, 0x22222222, 0x11111111</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>34</td><td><code>    DCD 0xAAAAAAAA, 0x33333333, 0x88888888</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>35</td><td><code>AREA MYDATA, DATA, READWRITE</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>36</td><td><code>RESULT DCD 0, 0, 0, 0, 0, 0</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>37</td><td><code>END</code></td><td>Marks the end of the assembly source file.</td></tr></tbody></table></div>
+ <h3>Expected result</h3><div class="result">Descending order: 0xAAAAAAAA, 0x88888888, 0x44444444, 0x33333333, 0x22222222, 0x11111111 (based on the six values legible in the notebook; verify the input constants against your original page).</div>
+</section>
+<section class="program" id="program-7">
+ <div class="tag">EXPERIMENT 05</div>
+ <h2>7. Count 1s and 0s in Two Consecutive Memory Locations</h2>
+ <p>Count the number of set bits (1s) and clear bits (0s) in two 32-bit words.</p>
+ <div class="logic"><b>Simple logic:</b> R2 counts zero bits and R3 counts one bits. R7 is the number of bits to inspect in each word (32). R6 points to VALUE. LDR reads each word. MOVS with ROR #1 rotates the least significant bit into the carry flag; BHI ONES is used in the notebook to test the bit path. The counters are incremented and the loops repeat.</div>
+ <h3>Complete program</h3>
+ <pre><code>AREA ONEZERO, CODE, READONLY
+EXPORT __main
+ENTRY
+__main
+START
+    MOV R2, #0
+    MOV R3, #0
+    MOV R7, #2
+    LDR R6, =VALUE
+LOOP
+    MOV R1, #32
+    LDR R0, [R6], #4
+LOOP0
+    MOVS R0, R0, ROR #1
+    BHI ONES
+    ADD R3, R3, #1
+    B LOOP1
+ONES
+    ADD R2, R2, #1
+LOOP1
+    SUBS R1, R1, #1
+    BNE LOOP0
+    SUBS R7, R7, #1
+    CMP R7, #0
+    BNE LOOP
+    NOP
+VALUE
+    DCD 0x11111111, 0xAA55AA55
+AREA DATA, DATA, READWRITE
+END</code></pre>
+ <h3>Line-by-line explanation</h3>
+ <div class="tablewrap"><table><thead><tr><th>#</th><th>Program line</th><th>Meaning</th></tr></thead><tbody><tr><td>1</td><td><code>AREA ONEZERO, CODE, READONLY</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>2</td><td><code>EXPORT __main</code></td><td>Makes the named entry symbol visible to the linker.</td></tr><tr><td>3</td><td><code>ENTRY</code></td><td>Marks the program entry point.</td></tr><tr><td>4</td><td><code>__main</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>5</td><td><code>START</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>6</td><td><code>    MOV R2, #0</code></td><td>Copies a value into the destination register.</td></tr><tr><td>7</td><td><code>    MOV R3, #0</code></td><td>Copies a value into the destination register.</td></tr><tr><td>8</td><td><code>    MOV R7, #2</code></td><td>Copies a value into the destination register.</td></tr><tr><td>9</td><td><code>    LDR R6, =VALUE</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>10</td><td><code>LOOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>11</td><td><code>    MOV R1, #32</code></td><td>Copies a value into the destination register.</td></tr><tr><td>12</td><td><code>    LDR R0, [R6], #4</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>13</td><td><code>LOOP0</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>14</td><td><code>    MOVS R0, R0, ROR #1</code></td><td>Copies a value and updates condition flags.</td></tr><tr><td>15</td><td><code>    BHI ONES</code></td><td>Branches if unsigned higher; useful for unsigned comparisons.</td></tr><tr><td>16</td><td><code>    ADD R3, R3, #1</code></td><td>Adds the source operand(s) and stores the sum in the destination register.</td></tr><tr><td>17</td><td><code>    B LOOP1</code></td><td>Unconditional branch to the named label.</td></tr><tr><td>18</td><td><code>ONES</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>19</td><td><code>    ADD R2, R2, #1</code></td><td>Adds the source operand(s) and stores the sum in the destination register.</td></tr><tr><td>20</td><td><code>LOOP1</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>21</td><td><code>    SUBS R1, R1, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>22</td><td><code>    BNE LOOP0</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>23</td><td><code>    SUBS R7, R7, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>24</td><td><code>    CMP R7, #0</code></td><td>Compares two values by internally subtracting them; updates flags but does not save a result.</td></tr><tr><td>25</td><td><code>    BNE LOOP</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>26</td><td><code>    NOP</code></td><td>No operation; useful as a simple stopping/debug point.</td></tr><tr><td>27</td><td><code>VALUE</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>28</td><td><code>    DCD 0x11111111, 0xAA55AA55</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>29</td><td><code>AREA DATA, DATA, READWRITE</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>30</td><td><code>END</code></td><td>Marks the end of the assembly source file.</td></tr></tbody></table></div>
+ <h3>Expected result</h3><div class="result">The uploaded notebook shows VALUE DCD 0x11111111, 0xAA55AA55. Expected total across two 32-bit words: 32 one-bits and 32 zero-bits. Note: the photographed code&#x27;s branch/flag sequence should be checked with your faculty copy before execution.</div>
+</section>
+<section class="program" id="program-8">
+ <div class="tag">EXPERIMENT 06</div>
+ <h2>8. Count Odd and Even Numbers in an Array</h2>
+ <p>Count odd and even numbers in the six-element array from the printed lab manual.</p>
+ <div class="logic"><b>Simple logic:</b> R2 stores the even count and R3 stores the odd count. R7 is loaded with ARRAYLEN (6). Each word is loaded into R0. TST R0,#1 checks bit 0: if it is zero, the number is even; otherwise it is odd.</div>
+ <h3>Complete program</h3>
+ <pre><code>AREA ODDEVEN, CODE, READONLY
+EXPORT __main
+ENTRY
+__main
+START
+    MOV R2, #0
+    MOV R3, #0
+    MOV R7, #ARRAYLEN
+    LDR R6, =ARRAY
+LOOP
+    LDR R0, [R6], #4
+    TST R0, #1
+    BEQ EVEN
+    ADD R3, R3, #1
+    B NEXT
+EVEN
+    ADD R2, R2, #1
+NEXT
+    SUBS R7, R7, #1
+    BNE LOOP
+    NOP
+ARRAY
+    DCD 5, 10, 13, 22, 45, 60
+ARRAYLEN EQU 6
+AREA DATA1, DATA, READWRITE
+END</code></pre>
+ <h3>Line-by-line explanation</h3>
+ <div class="tablewrap"><table><thead><tr><th>#</th><th>Program line</th><th>Meaning</th></tr></thead><tbody><tr><td>1</td><td><code>AREA ODDEVEN, CODE, READONLY</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>2</td><td><code>EXPORT __main</code></td><td>Makes the named entry symbol visible to the linker.</td></tr><tr><td>3</td><td><code>ENTRY</code></td><td>Marks the program entry point.</td></tr><tr><td>4</td><td><code>__main</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>5</td><td><code>START</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>6</td><td><code>    MOV R2, #0</code></td><td>Copies a value into the destination register.</td></tr><tr><td>7</td><td><code>    MOV R3, #0</code></td><td>Copies a value into the destination register.</td></tr><tr><td>8</td><td><code>    MOV R7, #ARRAYLEN</code></td><td>Copies a value into the destination register.</td></tr><tr><td>9</td><td><code>    LDR R6, =ARRAY</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>10</td><td><code>LOOP</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>11</td><td><code>    LDR R0, [R6], #4</code></td><td>Loads a value or address into a register. [Rn] reads memory at the address in Rn.</td></tr><tr><td>12</td><td><code>    TST R0, #1</code></td><td>Performs a bitwise AND for flag testing; here it checks the least significant bit.</td></tr><tr><td>13</td><td><code>    BEQ EVEN</code></td><td>Branches if the Zero flag is set (the tested result was zero).</td></tr><tr><td>14</td><td><code>    ADD R3, R3, #1</code></td><td>Adds the source operand(s) and stores the sum in the destination register.</td></tr><tr><td>15</td><td><code>    B NEXT</code></td><td>Unconditional branch to the named label.</td></tr><tr><td>16</td><td><code>EVEN</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>17</td><td><code>    ADD R2, R2, #1</code></td><td>Adds the source operand(s) and stores the sum in the destination register.</td></tr><tr><td>18</td><td><code>NEXT</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>19</td><td><code>    SUBS R7, R7, #1</code></td><td>Subtracts the operand and updates condition flags; commonly used to decrement a loop counter.</td></tr><tr><td>20</td><td><code>    BNE LOOP</code></td><td>Branches if the Zero flag is clear (the compared/decremented result was not zero).</td></tr><tr><td>21</td><td><code>    NOP</code></td><td>No operation; useful as a simple stopping/debug point.</td></tr><tr><td>22</td><td><code>ARRAY</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>23</td><td><code>    DCD 5, 10, 13, 22, 45, 60</code></td><td>Defines 32-bit data words in memory.</td></tr><tr><td>24</td><td><code>ARRAYLEN EQU 6</code></td><td>Assembly instruction/data declaration; read the operands from left to right and note the destination register.</td></tr><tr><td>25</td><td><code>AREA DATA1, DATA, READWRITE</code></td><td>Declares an assembler section. CODE is for instructions; DATA is for stored values.</td></tr><tr><td>26</td><td><code>END</code></td><td>Marks the end of the assembly source file.</td></tr></tbody></table></div>
+ <h3>Expected result</h3><div class="result">Array: 5, 10, 13, 22, 45, 60. Even count R2 = 3 (10, 22, 60). Odd count R3 = 3 (5, 13, 45).</div>
+</section>
+</main><img class="brand-logo" src="data:image/jpeg;base64,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" alt="PX logo"></body></html>
